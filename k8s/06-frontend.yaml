@@ -1,3 +1,4 @@
+
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -14,6 +15,7 @@ spec:
       labels:
         app: frontend
     spec:
+      automountServiceAccountToken: false
       containers:
         - name: frontend
           image: 619071356585.dkr.ecr.us-east-1.amazonaws.com/fixboard/frontend:1.0.0
@@ -35,8 +37,11 @@ spec:
             requests:
               cpu: 50m
               memory: 64Mi
+              ephemeral-storage: 256Mi
             limits:
+              cpu: 250m
               memory: 128Mi
+              ephemeral-storage: 1Gi
 ---
 apiVersion: v1
 kind: Service

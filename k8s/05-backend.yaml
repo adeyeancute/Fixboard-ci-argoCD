@@ -1,3 +1,4 @@
+
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -14,6 +15,7 @@ spec:
       labels:
         app: backend
     spec:
+      automountServiceAccountToken: false
       containers:
         - name: backend
           image: 619071356585.dkr.ecr.us-east-1.amazonaws.com/fixboard/backend:1.0.0
@@ -50,8 +52,11 @@ spec:
             requests:
               cpu: 100m
               memory: 128Mi
+              ephemeral-storage: 256Mi
             limits:
+              cpu: 500m
               memory: 256Mi
+              ephemeral-storage: 1Gi
       volumes:
         - name: uploads
           persistentVolumeClaim:
