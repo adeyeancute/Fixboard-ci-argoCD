@@ -1,3 +1,4 @@
+
 name: pipeline
 
 on:
@@ -8,6 +9,7 @@ on:
       - "frontend/**"
       - "sonar-project.properties"
       - ".github/workflows/pipeline.yml"
+
   push:
     branches: [main]
     paths:
@@ -16,13 +18,14 @@ on:
       - "sonar-project.properties"
       - ".github/workflows/pipeline.yml"
 
-permissions:
-  contents: read
-  pull-requests: read
-
 jobs:
   checks:
     runs-on: ubuntu-latest
+
+    permissions:
+      contents: read
+      pull-requests: read
+
     steps:
       - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 #v4
         with:
@@ -33,7 +36,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020  #v4
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 #v4
         with:
           node-version: 20
 
@@ -55,12 +58,13 @@ jobs:
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
 
-
   build:
     needs: checks
     runs-on: ubuntu-latest
+
     outputs:
       tag: ${{ steps.tag.outputs.tag }}
+
     steps:
       - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 #v4
 
@@ -116,4 +120,4 @@ jobs:
         with:
           name: images
           path: images.tar
-          retention-days: 1          
+          retention-days: 1
