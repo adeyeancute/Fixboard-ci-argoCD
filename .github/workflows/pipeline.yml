@@ -184,11 +184,16 @@ jobs:
       ARGOCD_SERVER: ${{ vars.ARGOCD_SERVER }}
       ARGOCD_AUTH_TOKEN: ${{ secrets.ARGOCD_AUTH_TOKEN }}
     steps:
-      - name: Install the ArgoCD CLI
+      - name: Install Argo CD CLI
         run: |
-          curl -sSL -o argocd \
+          curl --fail --silent --show-error --location \
+            --proto '=https' \
+            --proto-redir '=https' \
+            --output argocd \
             https://github.com/argoproj/argo-cd/releases/latest/download/argocd-linux-amd64
-          sudo install -m 755 argocd /usr/local/bin/argocd
+
+          chmod +x argocd
+          sudo mv argocd /usr/local/bin/argocd
 
       - name: Wait for ArgoCD to deploy the release
         run: |
